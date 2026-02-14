@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html class="dark" lang="en" style="font-size: 32px;">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Quantum Vault: MEGA EDITION</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f20d33",
+                        "background-light": "#f8f5f6",
+                        "background-dark": "#1a0a0c",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+        }
+
+        .matrix-grid {
+            background-image: radial-gradient(circle, #f20d33 4px, transparent 4px);
+            background-size: 100px 100px;
+            opacity: 0.2;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(242, 13, 51, 1);
+            border-radius: 40px;
+        }
+
+        /* MEGA OVERRIDES */
+        h1 {
+            font-size: 5rem !important;
+            line-height: 1 !important;
+            margin-bottom: 2rem !important;
+        }
+
+        h2 {
+            font-size: 3rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+
+        h3 {
+            font-size: 2rem !important;
+        }
+
+        .btn-mega {
+            padding: 3rem 5rem !important;
+            font-size: 3rem !important;
+            border-radius: 2.5rem !important;
+        }
+
+        .text-mega {
+            font-size: 2rem !important;
+            line-height: 1.4 !important;
+        }
+
+        .log-entry {
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .icon-mega {
+            font-size: 10rem !important;
+        }
+
+        .icon-med {
+            font-size: 5rem !important;
+        }
+
+        .stats-mega {
+            font-size: 6rem !important;
+            line-height: 1 !important;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display selection:bg-primary selection:text-white">
+    <div class="fixed inset-0 matrix-grid pointer-events-none"></div>
+    <div class="relative z-10 flex flex-col min-h-screen p-20 lg:p-32 overflow-x-hidden">
+
+        <!-- Header -->
+        <header class="flex flex-col xl:flex-row items-center justify-between mb-24 gap-16">
+            <div class="text-center xl:text-left">
+                <h1 class="font-black tracking-tighter flex items-center justify-center xl:justify-start gap-10">
+                    <span class="bg-primary text-white p-6 rounded-[2.5rem] shadow-[0_30px_90px_rgba(242,13,51,0.6)]">
+                        <span class="material-icons icon-med">security</span>
+                    </span>
+                    <span class="drop-shadow-[0_0_40px_rgba(242,13,51,0.6)] uppercase">Vault Terminal</span>
+                </h1>
+                <p id="header-sub-text"
+                    class="text-3xl text-primary font-black tracking-[0.4em] uppercase opacity-80 mt-10">Cyber
+                    Integration: Mega Edition Active</p>
+            </div>
+
+            <nav id="level-nav"
+                class="flex bg-primary/20 p-6 rounded-[3rem] border-4 border-primary/40 backdrop-blur-3xl scale-125">
+                <button onclick="setLevel(1)" id="btn-1"
+                    class="px-14 py-8 rounded-2xl text-4xl font-black transition-all hover:bg-white/10">1</button>
+                <button onclick="setLevel(2)" id="btn-2"
+                    class="px-14 py-8 rounded-2xl text-4xl font-black transition-all hover:bg-white/10">2</button>
+                <button onclick="setLevel(3)" id="btn-3"
+                    class="px-14 py-8 rounded-2xl text-4xl font-black bg-primary text-white shadow-[0_20px_60px_rgba(242,13,51,0.5)]">3</button>
+            </nav>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-grow grid grid-cols-12 gap-20 items-stretch">
+            <!-- NODE A -->
+            <section class="col-span-12 xl:col-span-4 flex flex-col gap-12">
+                <div
+                    class="flex-grow bg-[#120507]/90 border-4 border-primary/40 rounded-[5rem] p-20 backdrop-blur-3xl relative overflow-hidden flex flex-col shadow-2xl">
+                    <div class="absolute top-0 left-0 w-6 h-full bg-primary shadow-[20px_0_60px_rgba(242,13,51,0.5)]">
+                    </div>
+
+                    <h2 class="font-black tracking-tighter uppercase flex items-center gap-10">
+                        <span class="w-12 h-12 bg-primary rounded-full animate-ping"></span>
+                        Alpha Origin
+                    </h2>
+
+                    <div class="space-y-16 flex-grow flex flex-col">
+                        <div class="relative h-[600px]">
+                            <textarea id="message-input"
+                                class="w-full h-full bg-black/80 border-4 border-white/10 rounded-[4rem] p-16 font-mono text-5xl focus:border-primary focus:ring-8 focus:ring-primary/20 outline-none transition-all placeholder:text-white/20 resize-none leading-tight"
+                                placeholder="SOURCE DATA..."></textarea>
+                        </div>
+
+                        <div id="sender-logs"
+                            class="bg-black/90 rounded-[4rem] border-4 border-white/5 p-12 font-mono custom-scrollbar flex-grow min-h-[400px] overflow-y-auto">
+                            <div
+                                class="text-primary mb-10 font-black text-3xl tracking-widest border-b-4 border-primary/30 pb-4">
+                                UPLINK_STREAM</div>
+                            <div class="log-entry text-white/40">Ready for data ingestion...</div>
+                        </div>
+
+                        <button onclick="executeTransfer()" id="send-btn"
+                            class="w-full bg-primary hover:bg-primary/80 text-white font-black py-12 rounded-[4rem] flex items-center justify-center gap-10 transition-all active:scale-[0.9] group text-6xl shadow-[0_40px_100px_rgba(242,13,51,0.6)]">
+                            TRANSMIT
+                            <span
+                                class="material-icons text-8xl group-hover:translate-x-10 transition-transform">rocket_launch</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                class="col-span-12 xl:col-span-4 flex flex-col bg-[#0a0506]/95 border-8 border-white/5 rounded-[6rem] shadow-2xl relative overflow-hidden">
+                <div class="p-16 border-b-8 border-primary/20 bg-primary/5">
+                    <h2
+                        class="font-black tracking-tighter uppercase flex items-center gap-10 text-center justify-center">
+                        <span class="material-icons icon-med text-primary animate-pulse">hub</span>
+                        Neural Core
+                    </h2>
+                    <p class="text-2xl text-primary/60 font-black uppercase text-center tracking-[0.4em]">Traffic
+                        Monitor
+                    </p>
+                </div>
+
+                <div id="core-logs"
+                    class="flex-grow p-12 font-mono custom-scrollbar overflow-y-auto space-y-4 bg-black/40 backdrop-blur-3xl min-h-[800px]">
+                    <div class="log-entry text-white/20 text-center mt-40 italic">Waiting for quantum handshake...</div>
+                </div>
+
+                <div class="p-16 border-t-8 border-primary/20 bg-primary/5 grid grid-cols-2 gap-10">
+                    <div class="text-center">
+                        <div class="text-5xl font-black text-white stats-mega" id="stat-packets">0</div>
+                        <div class="text-xl text-primary/60 font-black uppercase tracking-widest">Packets</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl font-black text-green-500 stats-mega" id="stat-risk">0%</div>
+                        <div class="text-xl text-primary/60 font-black uppercase tracking-widest">Risk</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NODE B -->
+            <section class="col-span-12 xl:col-span-4 flex flex-col gap-12">
+                <div
+                    class="flex-grow bg-[#120507]/90 border-4 border-primary/40 rounded-[5rem] p-20 backdrop-blur-3xl relative overflow-hidden flex flex-col shadow-2xl">
+                    <div class="absolute top-0 right-0 w-6 h-full bg-primary shadow-[-20px_0_60px_rgba(242,13,51,0.5)]">
+                    </div>
+
+                    <h2 class="font-black tracking-tighter uppercase flex items-center gap-10">
+                        <span id="node-b-status"
+                            class="w-14 h-14 bg-green-500 rounded-full shadow-[0_0_60px_rgba(34,197,94,1)]"></span>
+                        Beta Target
+                    </h2>
+
+                    <div class="space-y-16 flex-grow flex flex-col">
+                        <div
+                            class="flex-grow bg-black/80 border-4 border-white/10 rounded-[4rem] p-16 font-mono relative overflow-hidden flex flex-col min-h-[500px]">
+                            <div id="verify-status"
+                                class="text-white/40 mb-12 flex items-center gap-10 text-4xl font-black tracking-widest uppercase">
+                                <span class="material-icons icon-med">shield</span>
+                                Standby
+                            </div>
+                            <div id="receiver-display"
+                                class="text-white font-black leading-tight italic overflow-y-auto custom-scrollbar text-7xl flex-grow">
+                                [Listening...]
+                            </div>
+                        </div>
+
+                        <div id="receiver-logs"
+                            class="bg-black/90 rounded-[4rem] border-4 border-white/5 p-12 font-mono custom-scrollbar h-64 overflow-y-auto">
+                            <div
+                                class="text-primary mb-10 font-black text-3xl tracking-widest border-b-4 border-primary/30 pb-4">
+                                RECEIVE_FEED</div>
+                            <div class="log-entry text-white/40">Remote sync enabled...</div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-12">
+                            <button onclick="resetUI()"
+                                class="col-span-2 bg-primary/20 hover:bg-primary/30 border-4 border-primary/40 text-primary py-10 rounded-[3rem] text-4xl font-black transition-all">PURGE
+                                ALL DATA</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- HUGE ALERT -->
+    <div id="alert-box"
+        class="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none opacity-0 transition-all duration-700 transform scale-50">
+        <div
+            class="bg-primary text-white p-32 rounded-[6rem] shadow-[0_0_300px_rgba(242,13,51,1)] border-[12px] border-white/40 flex flex-col items-center gap-20">
+            <span class="material-icons animate-bounce text-[25rem]">gpp_maybe</span>
+            <div class="text-center">
+                <div class="font-black text-9xl tracking-tighter uppercase mb-6">Security Alert</div>
+                <div id="alert-text" class="text-5xl font-black opacity-90 uppercase tracking-[0.4em]">SYSTEM DETECTED
+                </div>
+            </div>
+
+            <script>
+                let currentLevel = 3;
+                let packetsCount = 0;
+                const config = {
+                    1: { sender: "http://localhost:8022", receiver: "http://localhost:8021", label: "Plaintext", endpoint: "/receive" },
+                    2: { sender: "http://localhost:8012", receiver: "http://localhost:8011", label: "Hashed", endpoint: "/verify", action: "/hash" },
+                    3: { sender: "http://localhost:8002", receiver: "http://localhost:8001", label: "Signature", endpoint: "/verify", action: "/sign" }
+                };
+
+                function setLevel(lvl) {
+                    currentLevel = lvl;
+                    [1, 2, 3].forEach(i => {
+                        const btn = document.getElementById(`btn-${i}`);
+                        if (i === lvl) {
+                            btn.className = "px-14 py-8 rounded-2xl text-4xl font-black bg-primary text-white shadow-[0_20px_60px_rgba(242,13,51,0.5)]";
+                        } else {
+                            btn.className = "px-14 py-8 rounded-2xl text-4xl font-black transition-all hover:bg-white/10";
+                        }
+                    });
+                    logSender(`PROTOCOL SWITCH: LVL ${lvl}`, "primary");
+                    showAlert(`MODE: ${config[lvl].label.toUpperCase()}`);
+                }
+
+                function logSender(msg, type = "white/40") {
+                    const logs = document.getElementById("sender-logs");
+                    const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+                    const p = document.createElement("div");
+                    p.className = `log-entry text-mega border-l-4 border-primary/20 pl-4 py-1 mb-2 bg-white/5`;
+                    p.innerHTML = `<span class="opacity-20 font-black mr-4 text-xl">${time}</span> <span class="text-${type}">${msg}</span>`;
+                    logs.appendChild(p);
+                    logs.scrollTop = logs.scrollHeight;
+                }
+
+                function logReceiver(msg, type = "white/40") {
+                    const logs = document.getElementById("receiver-logs");
+                    const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+                    const p = document.createElement("div");
+                    p.className = `log-entry text-mega border-l-4 border-primary/20 pl-4 py-1 mb-2 bg-white/5`;
+                    p.innerHTML = `<span class="opacity-20 font-black mr-4 text-xl">${time}</span> <span class="text-${type}">${msg}</span>`;
+                    logs.appendChild(p);
+                    logs.scrollTop = logs.scrollHeight;
+                }
+
+                function showAlert(msg) {
+                    const box = document.getElementById("alert-box");
+                    document.getElementById("alert-text").innerText = msg;
+                    box.style.opacity = "1";
+                    box.style.transform = "scale(1)";
+                    setTimeout(() => {
+                        box.style.opacity = "0";
+                        box.style.transform = "scale(0.5)";
+                    }, 3000);
+                }
+
+                function resetUI() {
+                    document.getElementById("receiver-display").innerText = "[Listening...]";
+                    document.getElementById("message-input").value = "";
+                    document.getElementById("verify-status").innerText = "Standby";
+                    document.getElementById("verify-status").className = "text-white/40 mb-12 flex items-center gap-10 text-4xl font-black tracking-widest uppercase";
+                    document.getElementById("core-logs").innerHTML = '<div class="log-entry text-white/20 text-center mt-40 italic">Waiting for quantum handshake...</div>';
+                    logSender("CORE PURGE: Done.", "primary");
+                    showAlert("MEMORY ERASED");
+                }
+
+                function logCore(msg, type = "white/40") {
+                    const logs = document.getElementById("core-logs");
+                    const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+                    const p = document.createElement("div");
+                    p.className = `log-entry text-mega border-l-8 border-${type === 'primary' ? 'primary' : 'green-500'} pl-8 py-4 mb-6 bg-white/5 rounded-r-3xl`;
+                    p.innerHTML = `<span class="opacity-30 font-black mr-8 text-3xl font-mono">${time}</span> <span class="uppercase tracking-tighter">${msg}</span>`;
+                    logs.insertBefore(p, logs.firstChild);
+                }
+
+                async function executeTransfer() {
+                    const input = document.getElementById("message-input");
+                    const message = input.value.trim();
+                    if (!message) {
+                        showAlert("NULL PAYLOAD");
+                        return;
+                    }
+
+                    const sendBtn = document.getElementById("send-btn");
+                    sendBtn.disabled = true;
+                    sendBtn.classList.add('opacity-40');
+
+                    document.getElementById("core-logs").innerHTML = ""; // Clear for new session
+                    logSender(`TRANSMIT: Initiating Phase 1...`, "primary");
+                    logCore(`[INIT] ALPHA_ORIGIN Handshake Started`, "white/40");
+                    logCore(`[MESSAGE] DATA: "${message.substring(0, 20)}..."`, "white/40");
+
+                    try {
+                        const cfg = config[currentLevel];
+                        let payload = { message };
+
+                        // SECURITY SANDWICH: PHASE 1
+                        if (currentLevel > 1) {
+                            logCore(`[ENGINE] Initializing Cryptographic Core...`, "white/40");
+                            logCore(`[CRYP] SENDER Crypting & Signing Payload`, "primary");
+
+                            const signResponse = await fetch(`${cfg.sender}${cfg.action}`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ message })
+                            });
+                            payload = await signResponse.json();
+
+                            const tokenName = currentLevel === 3 ? 'RSA_SIGN' : 'SHA256_HASH';
+                            const tokenVal = currentLevel === 3 ? payload.signature_b64 : payload.hash;
+
+                            logSender(`PHASE 1 SECURED: ${tokenName} obtained.`, "green-400");
+                            logCore(`[SECURE] ${tokenName} generated: ${tokenVal.substring(0, 32)}...`, "green-500");
+                        } else {
+                            logCore(`[SKIP] No Security: Plaintext Mode Active`, "primary");
+                        }
+
+                        logSender(`TRANSMIT: Starting Phase 2 (Receiver Uplink)...`, "primary");
+                        logCore(`[UPLINK] Transmitting cluster to BETA_TARGET`, "white/40");
+                        logCore(`[NETWORK] Port Handshake: ${cfg.receiver.split(':').pop()} -> ${cfg.endpoint}`, "white/20");
+
+                        const response = await fetch(`${cfg.receiver}${cfg.endpoint}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const data = await response.json();
+                        packetsCount++;
+                        document.getElementById("stat-packets").innerText = packetsCount;
+
+                        logReceiver("Inbound Cluster Identified.");
+                        logCore(`[PROCESS] Receiver analyzing cluster integrity...`, "white/40");
+                        logCore(`[VERIFY] Comparing ${currentLevel > 1 ? 'Cryptographic Token' : 'Plaintext Content'}`, "white/20");
+
+                        const receiverMsg = data.status || "FAIL";
+                        const isSuccess = /\bValid\b/i.test(receiverMsg) || /\bSuccess\b/i.test(receiverMsg) || /\bReceived\b/i.test(receiverMsg);
+
+                        if (isSuccess) {
+                            logCore(`[RESULT] INTEGRITY VERIFIED: SUCCESS`, "green-500");
+                            logCore(`[AUTH] Access Granted to Beta Node`, "green-500");
+                            document.getElementById("verify-status").innerHTML = '<span class="material-icons icon-med text-green-500">verified</span> VERIFIED OK';
+                            document.getElementById("verify-status").className = "text-green-500 mb-12 flex items-center gap-10 text-4xl font-black tracking-widest uppercase";
+                            document.getElementById("receiver-display").innerText = payload.message;
+                            document.getElementById("receiver-display").className = "text-green-400 font-black italic text-7xl drop-shadow-lg";
+                            logReceiver("STATUS: 100% INTEGRITY", "green-500/100");
+                        } else {
+                            logCore(`[ALERT] CRYPTOGRAPHIC MISMATCH DETECTED!`, "primary");
+                            logCore(`[PANIC] INTEGRITY VIOLATION!`, "primary");
+                            document.getElementById("verify-status").innerHTML = '<span class="material-icons icon-med text-primary">warning</span> VIOLATION';
+                            document.getElementById("verify-status").className = "text-primary mb-12 flex items-center gap-10 text-4xl font-black tracking-widest uppercase animate-pulse";
+                            document.getElementById("receiver-display").innerText = "CORRUPTED DATA";
+                            document.getElementById("receiver-display").className = "text-primary font-black animate-pulse text-7xl";
+                            showAlert("INTEGRITY COMPROMISED");
+                            logReceiver(`STATUS: ${receiverMsg.toUpperCase()}`, "primary");
+                        }
+
+                    } catch (err) {
+                        logCore(`[FATAL] CONNECTION LOSS: TIMEOUT`, "primary");
+                        logSender("FATAL: OFFLINE", "primary");
+                        showAlert("NODE FAILURE");
+                    } finally {
+                        sendBtn.disabled = false;
+                        sendBtn.classList.remove('opacity-40');
+                    }
+                }
+
+                setInterval(() => {
+                    const container = document.getElementById("matrix-rain");
+                    if (container.children.length > 20) container.removeChild(container.firstChild);
+                    const span = document.createElement("span");
+                    span.innerText = "0x" + Math.random().toString(16).substring(2, 4).toUpperCase();
+                    span.className = "text-7xl font-black opacity-10 select-none";
+                    container.appendChild(span);
+                }, 400);
+            </script>
+</body>
+
+</html>

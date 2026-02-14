@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import base64
 
@@ -8,8 +9,20 @@ from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
 app = FastAPI(title="Receiver (Level 3 - Digital Signature Verification)")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Load the sender's public key (shared)
-with open("public.pem", "rb") as f:
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PUBLIC_KEY_PATH = os.path.join(BASE_DIR, "public.pem")
+
+with open(PUBLIC_KEY_PATH, "rb") as f:
     PUBLIC_KEY = load_pem_public_key(f.read())
 
 class VerifyRequest(BaseModel):
@@ -22,6 +35,8 @@ def health():
 
 @app.post("/verify")
 def verify(req: VerifyRequest):
+    print(f"DEBUG: Receiver Level 3 - Incoming Message: '{req.message}'")
+    print(f"DEBUG: Receiver Level 3 - Incoming Signature (truncated): {req.signature_b64[:20]}...")
     try:
         signature = base64.b64decode(req.signature_b64)
 
@@ -32,7 +47,9 @@ def verify(req: VerifyRequest):
             hashes.SHA256(),
         )
 
+        print("DEBUG: Receiver Level 3 - VERIFICATION SUCCESS")
         return {"status": "Signature Valid ✅"}
 
-    except Exception:
+    except Exception as e:
+        print(f"DEBUG: Receiver Level 3 - VERIFICATION FAILURE: {str(e)}")
         return {"status": "Signature Invalid ❌ (message changed or wrong key)"}
