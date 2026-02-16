@@ -18,7 +18,8 @@ app.add_middleware(
 class HashRequest(BaseModel):
     message: str
 
-RECEIVER_URL = "http://127.0.0.1:8011/verify"
+RECEIVER_URL = "http://127.0.0.1:8001/verify"
+
 
 @app.on_event("startup")
 def startup_event():
