@@ -9,8 +9,13 @@ from cryptography.hazmat.primitives.serialization import load_pem_public_key
 app = FastAPI(title="Receiver (Level 3 - Digital Signature Verification)")
 
 # Load the sender's public key (shared)
-with open("public.pem", "rb") as f:
+from pathlib import Path
+
+PUBLIC_KEY_PATH = Path(__file__).parent / "public.pem"
+
+with open(PUBLIC_KEY_PATH, "rb") as f:
     PUBLIC_KEY = load_pem_public_key(f.read())
+
 
 class VerifyRequest(BaseModel):
     message: str

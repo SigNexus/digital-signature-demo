@@ -54,41 +54,6 @@ def mutate_one_char(s: str, index: int, new_char: str) -> str:
     return s[:i] + (new_char[:1] if new_char else "X") + s[i + 1 :]
 
 
-# -------------------------
-# Signing helpers (optional; usually Person 3)
-# -------------------------
-def maybe_generate_keys() -> None:
-    """
-    Optional: generate an ECDSA keypair if missing.
-    Only runs if GENERATE_KEYS=1.
-    IMPORTANT: receiver must verify using the matching PUBLIC key.
-    """
-    if not GENERATE_KEYS:
-        return
-
-    if PRIVATE_KEY_PATH.exists() and PUBLIC_KEY_PATH.exists():
-        return
-
-    KEYS_DIR.mkdir(parents=True, exist_ok=True)
-
-    from cryptography.hazmat.primitives.asymmetric import ec
-    from cryptography.hazmat.primitives import serialization
-
-    private_key = ec.generate_private_key(ec.SECP256R1())
-
-    priv_pem = private_key.private_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption(),
-    )
-    pub_pem = private_key.public_key().public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo,
-    )
-
-    PRIVATE_KEY_PATH.write_bytes(priv_pem)
-    PUBLIC_KEY_PATH.write_bytes(pub_pem)
-
 
 def load_private_key():
     from cryptography.hazmat.primitives import serialization
@@ -102,46 +67,37 @@ def load_private_key():
 
 def sign_message_b64(message: str) -> str:
     """
-    Signs message bytes using the private key at PRIVATE_KEY_PATH.
-    Supports RSA or ECDSA keys depending on what PEM you provide.
+    Signs message bytes using an RSA private key at PRIVATE_KEY_PATH
+    using PKCS#1 v1.5 + SHA-256 (matches receiver verification).
     """
     priv = load_private_key()
     if priv is None:
         raise FileNotFoundError(
             f"Private key not found at {PRIVATE_KEY_PATH}. "
-            f"Either provide signature_b64 from Person 3, or set GENERATE_KEYS=1 (demo only), "
-            f"or place a PEM key at that path."
+            f"Run: py tools\\make_keys.py  (it writes sender/private.pem + receiver/public.pem)"
+        )
+
+    from cryptography.hazmat.primitives.asymmetric import rsa, padding
+    from cryptography.hazmat.primitives import hashes
+
+    if not isinstance(priv, rsa.RSAPrivateKey):
+        raise TypeError(
+            f"Expected RSA private key, got {type(priv)}. "
+            f"Regenerate keys with tools/make_keys.py"
         )
 
     msg_bytes = message.encode("utf-8")
 
-    # Detect key type and sign appropriately
-    from cryptography.hazmat.primitives import hashes
-    from cryptography.hazmat.primitives.asymmetric import rsa, ec, padding
-
-    if isinstance(priv, rsa.RSAPrivateKey):
-        sig = priv.sign(
-            msg_bytes,
-            padding.PKCS1v15(),
-            hashes.SHA256(),
-        )
-    elif isinstance(priv, ec.EllipticCurvePrivateKey):
-        sig = priv.sign(
-            msg_bytes,
-            ec.ECDSA(hashes.SHA256()),
-        )
-    else:
-        raise TypeError(f"Unsupported private key type: {type(priv)}")
+    sig = priv.sign(
+        msg_bytes,
+        padding.PKCS1v15(),
+        hashes.SHA256(),
+    )
 
     return base64.b64encode(sig).decode("utf-8")
 
 
-# -------------------------
-# API
-# -------------------------
-@app.on_event("startup")
-def _startup():
-    maybe_generate_keys()
+
 
 
 @app.get("/")
