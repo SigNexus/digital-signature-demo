@@ -14,6 +14,8 @@ from fastapi.responses import FileResponse
 # Initialize single unified generic app
 app = FastAPI(title="Quantum Vault: MEGA EDITION API")
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,6 +23,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files
+static_dir = os.path.join(BASE_DIR, "static")
+if not os.path.exists(static_dir):
+    os.makedirs(static_dir)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # -----------------
 # Pydantic Models
@@ -160,7 +168,10 @@ app.include_router(level3_router)
 def serve_frontend():
     index_path = os.path.join(BASE_DIR, "index.html")
     if os.path.exists(index_path):
-        return FileResponse(index_path)
+        return FileResponse(
+            index_path, 
+            headers={"Cache-Control": "no-cache, no-store, must-revalidate"}
+        )
     return {"error": "index.html not found in root directory."}
 
 if __name__ == "__main__":

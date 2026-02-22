@@ -6,27 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Quantum Vault: MEGA EDITION</title>
     <link rel="icon" href="data:," />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#f20d33",
-                        "background-light": "#f8f5f6",
-                        "background-dark": "#1a0a0c",
-                    },
-                    fontFamily: {
-                        "display": ["Space Grotesk"]
-                    }
-                },
-            },
-        }
-    </script>
+    <link href="/static/tailwind.css" rel="stylesheet" />
+    <link href="/static/fonts.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Space Grotesk', sans-serif;
@@ -143,8 +124,7 @@
             <section class="col-span-12 xl:col-span-4 flex flex-col gap-12">
                 <div
                     class="flex-grow bg-[#120507]/90 border-4 border-primary/40 rounded-[5rem] p-20 relative overflow-hidden flex flex-col shadow-2xl">
-                    <div
-                        class="absolute top-0 left-0 w-6 h-full bg-primary shadow-[20px_0_60px_rgba(242,13,51,0.5)] animate-pulse">
+                    <div class="absolute top-0 left-0 w-6 h-full bg-primary shadow-[20px_0_60px_rgba(242,13,51,0.5)]">
                     </div>
 
                     <h2 class="font-black tracking-tighter uppercase flex items-center gap-10">
@@ -182,12 +162,39 @@
                 <div class="p-16 border-b-8 border-primary/20 bg-primary/5">
                     <h2
                         class="font-black tracking-tighter uppercase flex items-center gap-10 text-center justify-center">
-                        <span class="material-icons icon-med text-primary animate-pulse">hub</span>
+                        <span class="material-icons icon-med text-primary">hub</span>
                         Neural Core
                     </h2>
                     <p class="text-2xl text-primary/60 font-black uppercase text-center tracking-[0.4em]">Traffic
                         Monitor
                     </p>
+
+                    <!-- ATTACKER TOGGLE -->
+                    <div class="mt-8 bg-black/50 p-6 rounded-3xl border-2 border-primary/30 flex flex-col gap-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl font-black text-primary uppercase">Simulate MitM Attack</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="attacker-toggle" class="sr-only peer"
+                                    onchange="toggleAttackerOptions()">
+                                <div
+                                    class="w-20 h-10 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-8 after:w-8 after:transition-all peer-checked:bg-primary">
+                                </div>
+                            </label>
+                        </div>
+                        <div id="attacker-options" class="hidden flex-col gap-3 mt-4 border-t-2 border-white/10 pt-4">
+                            <label class="flex items-center gap-3 text-xl font-bold cursor-pointer">
+                                <input type="radio" name="attack-type" value="tamper_message" checked
+                                    class="w-6 h-6 text-primary bg-black border-primary">
+                                <span class="text-white/80">Tamper Message Only (L2/L3)</span>
+                            </label>
+                            <label class="flex items-center gap-3 text-xl font-bold cursor-pointer">
+                                <input type="radio" name="attack-type" id="attack-rehash" value="tamper_and_rehash"
+                                    class="w-6 h-6 text-primary bg-black border-primary">
+                                <span class="text-white/80">Tamper Message AND Re-hash (L2 Only Flaw)</span>
+                            </label>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div id="core-logs"
@@ -211,8 +218,7 @@
             <section class="col-span-12 xl:col-span-4 flex flex-col gap-12">
                 <div
                     class="flex-grow bg-[#120507]/90 border-4 border-primary/40 rounded-[5rem] p-20 relative overflow-hidden flex flex-col shadow-2xl">
-                    <div
-                        class="absolute top-0 right-0 w-6 h-full bg-primary shadow-[-20px_0_60px_rgba(242,13,51,0.5)] animate-pulse">
+                    <div class="absolute top-0 right-0 w-6 h-full bg-primary shadow-[-20px_0_60px_rgba(242,13,51,0.5)]">
                     </div>
 
                     <h2 class="font-black tracking-tighter uppercase flex items-center gap-10">
@@ -259,7 +265,7 @@
         class="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none opacity-0 transition-all duration-700 transform scale-50">
         <div
             class="bg-primary text-white p-32 rounded-[6rem] shadow-[0_0_300px_rgba(242,13,51,1)] border-[12px] border-white/40 flex flex-col items-center gap-20">
-            <span class="material-icons animate-bounce text-[25rem]">gpp_maybe</span>
+            <span class="material-icons text-[25rem]">gpp_maybe</span>
             <div class="text-center">
                 <div class="font-black text-9xl tracking-tighter uppercase mb-6">Security Alert</div>
                 <div id="alert-text" class="text-5xl font-black opacity-90 uppercase tracking-[0.4em]">SYSTEM DETECTED
@@ -345,6 +351,28 @@
             showAlert("MEMORY ERASED");
         }
 
+        function toggleAttackerOptions() {
+            const toggle = document.getElementById("attacker-toggle");
+            const options = document.getElementById("attacker-options");
+            const rehashOption = document.getElementById("attack-rehash");
+
+            if (toggle.checked) {
+                options.classList.remove("hidden");
+                options.classList.add("flex");
+                if (currentLevel === 3) {
+                    rehashOption.disabled = true;
+                    rehashOption.parentElement.classList.add("opacity-50");
+                    document.querySelector('input[value="tamper_message"]').checked = true;
+                } else {
+                    rehashOption.disabled = false;
+                    rehashOption.parentElement.classList.remove("opacity-50");
+                }
+            } else {
+                options.classList.add("hidden");
+                options.classList.remove("flex");
+            }
+        }
+
         function logCore(msg, type = "white/40") {
             const logs = document.getElementById("core-logs");
             if (!logs) return;
@@ -403,6 +431,34 @@
                     logCore(`[SKIP] No Security: Plaintext Mode Active`, "primary");
                 }
 
+                // MITM ATTACK SIMULATION
+                const attackerEnabled = document.getElementById("attacker-toggle")?.checked;
+                if (attackerEnabled) {
+                    const attackType = document.querySelector('input[name="attack-type"]:checked').value;
+                    const tamperedMessage = payload.message + " [PAYLOAD TAMPERED!]";
+
+                    logCore(`[!!!] WARNING: MAN_IN_THE_MIDDLE ATTACK DETECTED IN TRANSIT`, "primary");
+                    logCore(`[HACKER] Intercepted payload in transit...`, "primary");
+                    logCore(`[HACKER] Modified message content to: "${tamperedMessage.substring(0, 20)}..."`, "white/20");
+
+                    payload.message = tamperedMessage;
+
+                    if (currentLevel === 2 && attackType === "tamper_and_rehash") {
+                        logCore(`[HACKER] Re-running SHA-256 on tampered payload...`, "primary");
+
+                        // We need to re-hash. For the frontend demo, we can just call the sender endpoint again 
+                        // because it has the hashing logic, but logically this is the hacker doing it themselves.
+                        const rehashResponse = await fetch(`${cfg.sender}/hash`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ message: tamperedMessage })
+                        });
+                        const rehashData = await rehashResponse.json();
+                        payload.hash = rehashData.hash;
+                        logCore(`[HACKER] Re-hashing successful. Appending valid hash. THIS IS THE FLAW OF LEVEL 2.`, "primary");
+                    }
+                }
+
                 logSender(`TRANSMIT: Starting Phase 2 (Receiver Uplink)...`, "primary");
                 logCore(`[UPLINK] Transmitting cluster to BETA_TARGET`, "white/40");
                 logCore(`[NETWORK] Port Handshake: ${cfg.receiver.split(':').pop()} -> ${cfg.endpoint}`, "white/20");
@@ -445,11 +501,11 @@
                     logCore(`[PANIC] INTEGRITY VIOLATION!`, "primary");
                     if (verifyStatus) {
                         verifyStatus.innerHTML = '<span class="material-icons icon-med text-primary">warning</span> VIOLATION';
-                        verifyStatus.className = "text-primary mb-12 flex items-center gap-10 text-4xl font-black tracking-widest uppercase animate-pulse";
+                        verifyStatus.className = "text-primary mb-12 flex items-center gap-10 text-4xl font-black tracking-widest uppercase";
                     }
                     if (receiverDisplay) {
                         receiverDisplay.innerText = "CORRUPTED DATA";
-                        receiverDisplay.className = "text-primary font-black animate-pulse text-7xl";
+                        receiverDisplay.className = "text-primary font-black text-7xl";
                     }
                     showAlert("INTEGRITY COMPROMISED");
                     logReceiver(`STATUS: ${receiverMsg.toUpperCase()}`, "primary");
